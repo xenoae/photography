@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Michael Hartley</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">Michael Hartley</a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Gallery</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<nav class="mobile-menu" id="mobileMenu">
+  <a href="index.html" class="active">Gallery</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<!-- Full-bleed hero image -->
+<div class="hero-img-placeholder" id="heroArea">[ Add a hero photo ]</div>
+
+<!-- Gallery content -->
+<div class="page-content">
+  <h1 class="page-title">Photography Gallery</h1>
+  <p class="page-subtitle">A collection of photographs from nature, wildlife, and city landscapes.</p>
+
+  <div class="gallery-filters" id="galleryFilters">
+    <button class="filter-btn active" data-filter="all">All</button>
+  </div>
+
+  <div class="gallery-grid" id="galleryGrid"></div>
+  <div class="gallery-empty" id="galleryEmpty">No photos yet — add some from the admin panel.</div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)">‹</button>
+  <img id="lightboxImg" src="" alt="">
+  <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)">›</button>
+</div>
+
+<footer>
+  <span class="footer-name">© 2026 Michael Hartley</span>
+  <div class="footer-right">
+    <button class="footer-admin" onclick="openAdminPrompt()">Admin</button>
+  </div>
+</footer>
+
+<!-- Admin -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <h2>Admin Panel</h2>
+      <button class="admin-close" onclick="closeAdmin()">×</button>
+    </div>
+    <div class="admin-body" id="adminBody"></div>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+<script>
+  let currentFilter = 'all';
+  let lightboxIndex = 0;
+  let filteredPhotos = [];
+
+  function initGallery() {
+    renderFilters();
+    renderGallery();
+  }
+
+  function renderFilters() {
+    const used = ['all', ...new Set(photos.map(p => p.category))];
+    document.getElementById('galleryFilters').innerHTML = used.map(f =>
+      `<button class="filter-btn${f===currentFilter?' active':''}" onclick="setFilter('${f}')">${f==='all'?'All':f}</button>`
+    ).join('');
+  }
+
+  function renderGallery() {
+    filteredPhotos = currentFilter === 'all' ? [...photos] : photos.filter(p => p.category === currentFilter);
+    const grid = document.getElementById('galleryGrid');
+    const empty = document.getElementById('galleryEmpty');
+    grid.innerHTML = '';
+    if (!filteredPhotos.length) { empty.classList.add('visible'); return; }
+    empty.classList.remove('visible');
+    filteredPhotos.forEach((p, i) => {
+      const el = document.createElement('div');
+      el.className = 'gallery-item';
+      el.innerHTML = `<img src="${p.src}" alt="${p.title}" loading="lazy">`;
+      el.onclick = () => openLightbox(i);
+      grid.appendChild(el);
+    });
+  }
+
+  function setFilter(f) { currentFilter = f; renderFilters(); renderGallery(); }
+
+  function openLightbox(i) {
+    lightboxIndex = i;
+    document.getElementById('lightboxImg').src = filteredPhotos[i].src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function navLightbox(d) {
+    lightboxIndex = (lightboxIndex + d + filteredPhotos.length) % filteredPhotos.length;
+    document.getElementById('lightboxImg').src = filteredPhotos[lightboxIndex].src;
+  }
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') navLightbox(-1);
+    if (e.key === 'ArrowRight') navLightbox(1);
+  });
+  document.getElementById('lightbox').addEventListener('click', e => {
+    if (e.target.id === 'lightbox') closeLightbox();
+  });
+
+  initGallery();
+</script>
+</body>
+</html>

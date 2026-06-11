@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Michael Hartley</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">Michael Hartley</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Gallery</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<nav class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Gallery</a>
+  <a href="about.html" class="active">About</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<!-- Full-bleed photo -->
+<div class="about-photo-placeholder">[ Add your portrait or a favourite photo ]</div>
+
+<!-- About text -->
+<div class="page-content">
+  <h1 class="page-title">About</h1>
+
+  <p>Hey, I'm Michael Hartley — a professional photographer based in Pennsylvania with a deep passion for capturing the world as I experience it.</p>
+
+  <p>My work focuses on nature, wildlife, and city landscapes. I'm drawn to moments that feel real and unplanned — shifting light, quiet scenes in the wild, or the energy of a city when everything briefly lines up. Most of my photos come from simply being out there, noticing something that pulls me in and feels worth freezing in time.</p>
+
+  <p>Photography has been a constant in my life, growing from an interest into something I take seriously both creatively and professionally. What started as just taking pictures turned into a way for me to tell stories, explore places, and document moments that would otherwise pass unnoticed.</p>
+
+  <p>Whether I'm photographing wildlife, natural landscapes, or urban environments, my goal is always the same: to create images that feel authentic, immersive, and driven by a genuine love for the craft.</p>
+</div>
+
+<footer>
+  <span class="footer-name">© 2026 Michael Hartley</span>
+  <div class="footer-right">
+    <button class="footer-admin" onclick="openAdminPrompt()">Admin</button>
+  </div>
+</footer>
+
+<!-- Admin -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <h2>Admin Panel</h2>
+      <button class="admin-close" onclick="closeAdmin()">×</button>
+    </div>
+    <div class="admin-body" id="adminBody"></div>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+<script>
+  function toggleMobileMenu() {
+    document.getElementById('mobileMenu')?.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
