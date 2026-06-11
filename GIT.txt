@@ -1,0 +1,4 @@
+cd ~/Documents/photography\ website
+git add .
+git commit -m "redesign matching teo crawford layout"
+git push

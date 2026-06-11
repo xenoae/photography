@@ -20,26 +20,30 @@
   </button>
 </nav>
 
-<nav class="mobile-menu" id="mobileMenu">
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="toggleMobileMenu()">×</button>
   <a href="index.html">Gallery</a>
   <a href="about.html" class="active">About</a>
   <a href="contact.html">Contact</a>
-</nav>
+</div>
 
-<!-- Full-bleed photo -->
-<div class="about-photo-placeholder">[ Add your portrait or a favourite photo ]</div>
+<!-- Full-viewport hero -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <h1 class="hero-title">About</h1>
+</div>
 
-<!-- About text -->
-<div class="page-content">
-  <h1 class="page-title">About</h1>
-
-  <p>Hey, I'm Michael Hartley — a professional photographer based in Pennsylvania with a deep passion for capturing the world as I experience it.</p>
-
-  <p>My work focuses on nature, wildlife, and city landscapes. I'm drawn to moments that feel real and unplanned — shifting light, quiet scenes in the wild, or the energy of a city when everything briefly lines up. Most of my photos come from simply being out there, noticing something that pulls me in and feels worth freezing in time.</p>
-
-  <p>Photography has been a constant in my life, growing from an interest into something I take seriously both creatively and professionally. What started as just taking pictures turned into a way for me to tell stories, explore places, and document moments that would otherwise pass unnoticed.</p>
-
-  <p>Whether I'm photographing wildlife, natural landscapes, or urban environments, my goal is always the same: to create images that feel authentic, immersive, and driven by a genuine love for the craft.</p>
+<!-- Two-column: text left, photo right -->
+<div class="about-body">
+  <div class="about-text">
+    <p>Hey, I'm Michael Hartley — a professional photographer based in Pennsylvania with a deep passion for capturing the world as I experience it.</p>
+    <p>My work focuses on nature, wildlife, and city landscapes. I'm drawn to moments that feel real and unplanned — shifting light, quiet scenes in the wild, or the energy of a city when everything briefly lines up. Most of my photos come from simply being out there, noticing something that pulls me in and feels worth freezing in time.</p>
+    <p>Photography has been a constant in my life, growing from an interest into something I take seriously both creatively and professionally. What started as just taking pictures turned into a way for me to tell stories, explore places, and document moments that would otherwise pass unnoticed.</p>
+    <p>Whether I'm photographing wildlife, natural landscapes, or urban environments, my goal is always the same: to create images that feel authentic, immersive, and driven by a genuine love for the craft.</p>
+  </div>
+  <div class="about-photo-wrap">
+    <div class="about-photo-placeholder">[ Your photo here ]</div>
+  </div>
 </div>
 
 <footer>
@@ -49,7 +53,6 @@
   </div>
 </footer>
 
-<!-- Admin -->
 <div class="admin-overlay" id="adminOverlay">
   <div class="admin-panel">
     <div class="admin-header">
@@ -62,8 +65,11 @@
 
 <script src="admin.js"></script>
 <script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
+  });
   function toggleMobileMenu() {
-    document.getElementById('mobileMenu')?.classList.toggle('open');
+    document.getElementById('mobileMenu').classList.toggle('open');
   }
 </script>
 </body>

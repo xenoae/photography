@@ -6,7 +6,7 @@
 <title>Contact — Michael Hartley</title>
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="no-hero">
 
 <nav id="mainNav">
   <a href="index.html" class="nav-logo">Michael Hartley</a>
@@ -20,23 +20,20 @@
   </button>
 </nav>
 
-<nav class="mobile-menu" id="mobileMenu">
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="toggleMobileMenu()">×</button>
   <a href="index.html">Gallery</a>
   <a href="about.html">About</a>
   <a href="contact.html" class="active">Contact</a>
-</nav>
+</div>
 
-<!-- Full-bleed header image -->
-<div class="hero-img-placeholder">[ Add a header photo ]</div>
-
-<div class="page-content">
-  <h1 class="page-title">Contact</h1>
-  <p class="page-subtitle" style="margin-bottom:36px">Have a question or just want to say hello? Send a message below.</p>
+<div class="contact-wrap">
+  <h1>Contact</h1>
+  <p class="contact-subtitle">Have a question or just want to say hello? Send a message below.</p>
 
   <form class="contact-form" onsubmit="submitForm(event)">
-    <!-- Name row -->
     <div style="margin-bottom:4px">
-      <label class="form-label" style="font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:8px">Name</label>
+      <label style="font-size:0.72rem;letter-spacing:0.07em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:8px">Name</label>
       <div class="form-name-row">
         <div class="form-group">
           <input type="text" placeholder="First name" required>
@@ -46,22 +43,18 @@
         </div>
       </div>
     </div>
-
     <div class="form-group">
       <label>Email</label>
       <input type="email" placeholder="your@email.com" required>
     </div>
-
     <div class="form-group">
       <label>Subject</label>
       <input type="text" placeholder="What's on your mind?" required>
     </div>
-
     <div class="form-group">
       <label>Message</label>
       <textarea placeholder="Write your message here…" required></textarea>
     </div>
-
     <button type="submit" class="btn-submit">Send Message</button>
     <p class="form-success" id="formSuccess">✓ Message sent — I'll get back to you soon.</p>
   </form>
@@ -74,7 +67,6 @@
   </div>
 </footer>
 
-<!-- Admin -->
 <div class="admin-overlay" id="adminOverlay">
   <div class="admin-panel">
     <div class="admin-header">
@@ -88,7 +80,7 @@
 <script src="admin.js"></script>
 <script>
   function toggleMobileMenu() {
-    document.getElementById('mobileMenu')?.classList.toggle('open');
+    document.getElementById('mobileMenu').classList.toggle('open');
   }
   function submitForm(e) {
     e.preventDefault();

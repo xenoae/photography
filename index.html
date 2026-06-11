@@ -20,29 +20,31 @@
   </button>
 </nav>
 
-<nav class="mobile-menu" id="mobileMenu">
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="toggleMobileMenu()">×</button>
   <a href="index.html" class="active">Gallery</a>
   <a href="about.html">About</a>
   <a href="contact.html">Contact</a>
-</nav>
+</div>
 
-<!-- Full-bleed hero image -->
-<div class="hero-img-placeholder" id="heroArea">[ Add a hero photo ]</div>
+<!-- Full-viewport hero with title centered over image -->
+<div class="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <h1 class="hero-title">Photography Gallery</h1>
+</div>
 
-<!-- Gallery content -->
 <div class="page-content">
-  <h1 class="page-title">Photography Gallery</h1>
   <p class="page-subtitle">A collection of photographs from nature, wildlife, and city landscapes.</p>
 
   <div class="gallery-filters" id="galleryFilters">
-    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn active">All</button>
   </div>
 
-  <div class="gallery-grid" id="galleryGrid"></div>
-  <div class="gallery-empty" id="galleryEmpty">No photos yet — add some from the admin panel.</div>
+  <div class="gallery-grid" id="galleryGrid">
+    <div class="gallery-empty visible" id="galleryEmpty">No photos yet.</div>
+  </div>
 </div>
 
-<!-- Lightbox -->
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">×</button>
   <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)">‹</button>
@@ -57,7 +59,6 @@
   </div>
 </footer>
 
-<!-- Admin -->
 <div class="admin-overlay" id="adminOverlay">
   <div class="admin-panel">
     <div class="admin-header">
@@ -70,11 +71,21 @@
 
 <script src="admin.js"></script>
 <script>
+  // transparent nav becomes white on scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  function toggleMobileMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
   let currentFilter = 'all';
   let lightboxIndex = 0;
   let filteredPhotos = [];
 
-  function initGallery() {
+  async function initGallery() {
+    await loadData();
     renderFilters();
     renderGallery();
   }
@@ -89,14 +100,15 @@
   function renderGallery() {
     filteredPhotos = currentFilter === 'all' ? [...photos] : photos.filter(p => p.category === currentFilter);
     const grid = document.getElementById('galleryGrid');
-    const empty = document.getElementById('galleryEmpty');
     grid.innerHTML = '';
-    if (!filteredPhotos.length) { empty.classList.add('visible'); return; }
-    empty.classList.remove('visible');
+    if (!filteredPhotos.length) {
+      grid.innerHTML = '<div class="gallery-empty visible">No photos yet.</div>';
+      return;
+    }
     filteredPhotos.forEach((p, i) => {
       const el = document.createElement('div');
       el.className = 'gallery-item';
-      el.innerHTML = `<img src="${p.src}" alt="${p.title}" loading="lazy">`;
+      el.innerHTML = `<img src="${p.url}" alt="${p.title}" loading="lazy">`;
       el.onclick = () => openLightbox(i);
       grid.appendChild(el);
     });
@@ -106,7 +118,7 @@
 
   function openLightbox(i) {
     lightboxIndex = i;
-    document.getElementById('lightboxImg').src = filteredPhotos[i].src;
+    document.getElementById('lightboxImg').src = filteredPhotos[i].url;
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -116,7 +128,7 @@
   }
   function navLightbox(d) {
     lightboxIndex = (lightboxIndex + d + filteredPhotos.length) % filteredPhotos.length;
-    document.getElementById('lightboxImg').src = filteredPhotos[lightboxIndex].src;
+    document.getElementById('lightboxImg').src = filteredPhotos[lightboxIndex].url;
   }
   document.addEventListener('keydown', e => {
     if (!document.getElementById('lightbox').classList.contains('open')) return;
